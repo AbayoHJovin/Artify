@@ -217,7 +217,7 @@ export default function Saved() {
             </div>
           ))
         ) : (
-          <h1 className="text-xl">No data</h1>
+          <h1 className="text-xl">you do not have any data saved</h1>
         )}
       </div>
       <ToastContainer />
