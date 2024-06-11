@@ -33,12 +33,14 @@ export default function Start() {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        if (data.msg === "Missing details") {
-          toast.success(data.msg);
+        if (data.message ==="Account created successfully") {
+          toast.success(data.message);
+        }else if(data.message !== "Account created successfully"){
+       toast.error(data.message)
         } else {
           setSignedUp(false);
         }
-      });
+      }).catch((e)=>toast.error(e))
   }
   window.addEventListener("load", () => {
     sessionStorage.removeItem("token");

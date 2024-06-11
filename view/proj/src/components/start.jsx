@@ -9,7 +9,6 @@ const MediaForm = () => {
   const [type, setType] = useState("");
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
-  const [saved, setSaved] = useState(0);
   const [usernames,setUsernames]=useState('')
 
   const handleSubmit = (e) => {
@@ -58,17 +57,7 @@ const MediaForm = () => {
     console.log("Logged out");
     navigate("/details");
   }
-  useEffect(() => {
-    fetch("http://localhost:2024/all")
-      .then((response) => response.json())
-      .then((res) => {
-        const responseData = res.response;
-        setSaved(responseData.length);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
+
   return (
     <div className="container mx-auto">
       <ToastContainer />

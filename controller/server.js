@@ -89,7 +89,11 @@ app.post("/add", async (req, res) => {
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
-      throw new Error("missing details entered");
+      throw new Error("missing details ");
+    }
+    const exists=await User.findOne({email:email})
+    if(exists){
+      throw new Error("User already exists")
     }
     const hashed = await bcrypt.hash(password, 4);
     const createUser = await User.create({
@@ -97,7 +101,7 @@ app.post("/add", async (req, res) => {
       email: email,
       password: hashed,
     });
-    return res.status(201).json({ message: "User created successfully" });
+    return res.status(201).json({ message: "Account created successfully" });
   } catch (e) {
     return res
       .status(401)
