@@ -11,12 +11,12 @@ const checkAuth = require("./checkAuth");
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
-const url = "mongodb://localhost:27017/media";
+const url = process.env.MONGO_URI;
 mongoose
   .connect(url)
   .then(() => {
     console.log("connected to the backend");
-    app.listen(2024, () => console.log("server has started"));
+    app.listen(process.env.PORT, () => console.log("server has started"));
   })
   .catch((e) => console.log("Error has been detected:", e));
 
