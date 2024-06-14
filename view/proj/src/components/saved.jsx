@@ -4,6 +4,7 @@ import {
   FaAngleUp,
   FaEdit,
   FaHome,
+  FaSearch,
   FaTrash,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -17,10 +18,13 @@ import {
 } from "@mui/material";
 
 export default function Saved() {
+  document.title = "saved";
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [updateData, setUpdateData] = useState({});
+  const [filtered, setFiltered] = useState([]);
   const [expandedIndexes, setExpandedIndexes] = useState([]);
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,13 +35,19 @@ export default function Saved() {
     }
   }, []);
   useEffect(() => {
-    fetch(`http://localhost:2024/all/?id=${JSON.parse(sessionStorage.getItem("user"))._id}`,{
-      method:"GET"
-    })
+    fetch(
+      `http://localhost:2024/all/?id=${
+        JSON.parse(sessionStorage.getItem("user"))._id
+      }`,
+      {
+        method: "GET",
+      }
+    )
       .then((response) => response.json())
       .then((res) => {
         const responseData = res.response;
         setData(responseData);
+        setFiltered(responseData);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -57,7 +67,7 @@ export default function Saved() {
     })
       .then((data) => data.json())
       .then((resp) => {
-        setData((prev) => prev.filter((_, i) => i !== index));
+        setFiltered((prev) => prev.filter((_, i) => i !== index));
         console.log(resp.message);
         toast.success(resp.message);
       })
@@ -92,6 +102,18 @@ export default function Saved() {
       })
       .catch((e) => console.error(e));
   }
+  useEffect(() => {
+    const findSaved = data.filter((item) =>
+      Object.values(item).some(
+        (value) =>
+          typeof value === "string" &&
+          value.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+    setFiltered(findSaved);
+    console.log(findSaved);
+  }, [search]);
+
   return (
     <div className="p-4">
       <Dialog
@@ -159,7 +181,7 @@ export default function Saved() {
         </DialogActions>
       </Dialog>
 
-      <div className="bg-gray-100 p-5 mb-10 flex justify-between items-center">
+      <div className="bg-gray-100 p-5 mb-10 flex justify-between sticky top-0 z-10 items-center">
         <h1 className="text-2xl font-bold mb-4">Your data:</h1>
         <FaHome
           size={30}
@@ -167,9 +189,19 @@ export default function Saved() {
           className="cursor-pointer"
         />
       </div>
+      <div className="sticky top-16 z-10 w-full max-w-md flex items-center justify-center mb-10">
+        <input
+          type="text"
+          className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
+          placeholder="Search..."
+          onChange={(e) => setSearch(e.target.value)}
+          // onInput={handleSearch}
+        />
+        <FaSearch className="absolute left-3 top-2.5 text-gray-400" />
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 cursor-pointer">
-        {data.length > 0 ? (
-          data.map((datum, index) => (
+        {filtered.length > 0 ? (
+          filtered.map((datum, index) => (
             <div
               key={index}
               className={`bg-blue-500 text-white rounded-lg shadow-md p-4 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105 ${
@@ -217,7 +249,7 @@ export default function Saved() {
             </div>
           ))
         ) : (
-          <h1 className="text-xl">you do not have any data saved</h1>
+          <h1 className="text-xl">We can not find any data</h1>
         )}
       </div>
       <ToastContainer />

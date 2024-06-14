@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineClose } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
-
+document.title="user login/signup"
 export default function Start() {
   const navigate = useNavigate();
   const [signedUp, setSignedUp] = useState(true);

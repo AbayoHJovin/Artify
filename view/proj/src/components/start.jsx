@@ -5,30 +5,55 @@ import { ToastContainer, toast } from "react-toastify";
 import Footer from "./footer";
 import { FaSave } from "react-icons/fa";
 const MediaForm = () => {
+  document.title = "Artify-Home";
   const [title, setTitle] = useState("");
   const [type, setType] = useState("");
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
-  const [usernames,setUsernames]=useState('')
-
+  const [usernames, setUsernames] = useState("");
+  document.addEventListener("visibilitychange", () => {
+    const user = sessionStorage.getItem("user");
+    const token = sessionStorage.getItem("token");
+    if (!token || !user) {
+      navigate("/details");
+    }
+  });
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted:", { title, type, description });
-    fetch("http://localhost:2024/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: title,
-        type: type,
-        description: description,
-        owner: JSON.parse(sessionStorage.getItem("user"))._id,
-      }),
-    })
-      .then((data) => data.json())
-      .then((resp) => {
-        toast.success(resp.message);
+    fetch(
+      `http://localhost:2024/all/?id=${
+        JSON.parse(sessionStorage.getItem("user"))._id
+      }`,
+      {
+        method: "GET",
+      }
+    )
+      .then((response) => response.json())
+      .then((res) => {
+        const responseData = res.response;
+        if (responseData.length < 12) {
+          fetch("http://localhost:2024/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: title,
+              type: type,
+              description: description,
+              owner: JSON.parse(sessionStorage.getItem("user"))._id,
+            }),
+          })
+            .then((data) => data.json())
+            .then((resp) => {
+              toast.success(resp.message);
+            });
+        } else {
+          toast.error("You have reached 12 documents");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
       });
   };
   useEffect(() => {
@@ -45,8 +70,7 @@ const MediaForm = () => {
           console.log(data.message);
         } else {
           console.log("Allowed");
-  setUsernames(JSON.parse(sessionStorage.getItem("user")).name)
-
+          setUsernames(JSON.parse(sessionStorage.getItem("user")).name);
         }
       })
       .catch((e) => console.error(e));
@@ -87,6 +111,9 @@ const MediaForm = () => {
           Here you can put some of your songs, movies, or any other form of
           entertainment, and we will help you save them in the database for
           future use.
+        </p>
+        <p className="text-lg mb-8">
+          The maximum number of documents you can save is 12
         </p>
       </div>
 
@@ -151,7 +178,7 @@ const MediaForm = () => {
           </button>
         </form>
       </div>
-     <Footer/>
+      <Footer />
     </div>
   );
 };
