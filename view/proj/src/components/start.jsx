@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Footer from "./footer";
 import { FaSave } from "react-icons/fa";
+import { apiUrl } from "../lib/constants";
 const MediaForm = () => {
   document.title = "Artify-Home";
   const [title, setTitle] = useState("");
@@ -21,9 +22,7 @@ const MediaForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     fetch(
-      `http://localhost:2024/all/?id=${
-        JSON.parse(sessionStorage.getItem("user"))._id
-      }`,
+      `${apiUrl}/all/?id=${JSON.parse(sessionStorage.getItem("user"))._id}`,
       {
         method: "GET",
       }
@@ -32,7 +31,7 @@ const MediaForm = () => {
       .then((res) => {
         const responseData = res.response;
         if (responseData.length < 12) {
-          fetch("http://localhost:2024/", {
+          fetch(`${apiUrl}`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -57,7 +56,7 @@ const MediaForm = () => {
       });
   };
   useEffect(() => {
-    fetch("http://localhost:2024/home", {
+    fetch(`${apiUrl}/home`, {
       method: "GET",
       headers: {
         authorization: `${sessionStorage.getItem("token")}`, // Get the token from sessionStorage

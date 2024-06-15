@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineClose } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
-document.title="user login/signup"
+import { apiUrl } from "../lib/constants";
+document.title = "user login/signup";
 export default function Start() {
   const navigate = useNavigate();
   const [signedUp, setSignedUp] = useState(true);
@@ -19,7 +20,7 @@ export default function Start() {
   }
 
   function SignUserUp() {
-    fetch("http://localhost:2024/add", {
+    fetch(`${apiUrl}/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -33,14 +34,15 @@ export default function Start() {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        if (data.message ==="Account created successfully") {
+        if (data.message === "Account created successfully") {
           toast.success(data.message);
-        }else if(data.message !== "Account created successfully"){
-       toast.error(data.message)
+        } else if (data.message !== "Account created successfully") {
+          toast.error(data.message);
         } else {
           setSignedUp(false);
         }
-      }).catch((e)=>toast.error(e))
+      })
+      .catch((e) => toast.error(e));
   }
   window.addEventListener("load", () => {
     sessionStorage.removeItem("token");
@@ -48,7 +50,7 @@ export default function Start() {
   });
 
   function loginUser() {
-    fetch("http://localhost:2024/login", {
+    fetch(`${apiUrl}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

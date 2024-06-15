@@ -16,6 +16,7 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
+import { apiUrl } from "../lib/constants";
 
 export default function Saved() {
   document.title = "saved";
@@ -36,9 +37,7 @@ export default function Saved() {
   }, []);
   useEffect(() => {
     fetch(
-      `http://localhost:2024/all/?id=${
-        JSON.parse(sessionStorage.getItem("user"))._id
-      }`,
+      `${apiUrl}/all/?id=${JSON.parse(sessionStorage.getItem("user"))._id}`,
       {
         method: "GET",
       }
@@ -62,7 +61,7 @@ export default function Saved() {
     );
   }
   function handleDelete(index, item) {
-    fetch(`http://localhost:2024/delete/?id=${item._id}`, {
+    fetch(`${apiUrl}/delete/?id=${item._id}`, {
       method: "DELETE",
     })
       .then((data) => data.json())
@@ -86,7 +85,7 @@ export default function Saved() {
       type: updateData.type,
       description: updateData.contents,
     });
-    fetch("http://localhost:2024/edit", {
+    fetch(`${apiUrl}/edit`, {
       method: "PUT",
       headers: {
         "Content-Type": "Application/json",
