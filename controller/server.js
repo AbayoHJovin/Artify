@@ -11,7 +11,11 @@ const checkAuth = require("./checkAuth");
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 app.use(bodyParser.json());
 const url = process.env.MONGO_URI;
 
