@@ -5,6 +5,8 @@ import { ToastContainer, toast } from "react-toastify";
 import Footer from "./footer";
 import { FaSave } from "react-icons/fa";
 import { apiUrl } from "../lib/constants";
+import logo from "../../logo.png";
+
 const MediaForm = () => {
   document.title = "Artify-Home";
   const [title, setTitle] = useState("");
@@ -85,9 +87,10 @@ const MediaForm = () => {
     <div className="container mx-auto">
       <ToastContainer />
       <div className="flex justify-between items-center p-5 bg-white shadow-md sticky top-0">
-        <div className="text-gray-600">
-          <p className="text-4xl font-extrabold text-purple-600">Artify</p>
-        </div>
+      <div className="text-gray-600 flex items-center">
+            <img src={logo} alt="Logo" className="h-12 mr-[-20px] mt-2" />
+            <p className="text-4xl font-extrabold text-white">rtify</p>
+          </div>
         <div className="flex items-center space-x-7 cursor-pointer text-blue-500">
           <FaSave
             size={20}

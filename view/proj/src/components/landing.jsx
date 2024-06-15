@@ -6,6 +6,7 @@ import { ReactTyped } from "react-typed";
 import Footer from "./footer";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import logo from "../../logo.png";
 
 export default function Landing() {
   document.title = "Artify-Landing";
@@ -16,8 +17,9 @@ export default function Landing() {
     <div>
       <div className="bg-blue-600 sticky top-0 z-10">
         <nav className="flex items-center justify-between p-4 md:px-10">
-          <div className="text-gray-600">
-            <p className="text-4xl font-extrabold text-white">Artify</p>
+          <div className="text-gray-600 flex items-center">
+            <img src={logo} alt="Logo" className="h-12 mr-[-20px] mt-2" />
+            <p className="text-4xl font-extrabold text-white">rtify</p>
           </div>
 
           <div className="md:hidden">
