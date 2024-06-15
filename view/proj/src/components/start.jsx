@@ -89,7 +89,7 @@ const MediaForm = () => {
       <div className="flex justify-between items-center p-5 bg-white shadow-md sticky top-0">
       <div className="text-gray-600 flex items-center">
             <img src={logo} alt="Logo" className="h-12 mr-[-20px] mt-2" />
-            <p className="text-4xl font-extrabold text-white">rtify</p>
+            <p className="text-4xl font-extrabold text-purple-600">rtify</p>
           </div>
         <div className="flex items-center space-x-7 cursor-pointer text-blue-500">
           <FaSave
