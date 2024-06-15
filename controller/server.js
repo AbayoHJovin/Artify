@@ -8,21 +8,26 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 const checkAuth = require("./checkAuth");
+
 const app = express();
+
 app.use(cors());
 app.use(bodyParser.json());
 const url = process.env.MONGO_URI;
+
 mongoose
   .connect(url)
   .then(() => {
     console.log("connected to the backend");
-    app.listen(process.env.PORT, () => console.log("server has started"));
+    app.listen(process.env.PORT || 4000, () =>
+      console.log("server has started")
+    );
   })
   .catch((e) => console.log("Error has been detected:", e));
 
 app.post("/", async (req, res) => {
   try {
-    const { name, type, description,owner } = req.body;
+    const { name, type, description, owner } = req.body;
     if (!name || !type || !description) {
       throw new Error("Some of the data are missing");
     }
@@ -30,7 +35,7 @@ app.post("/", async (req, res) => {
       name: name,
       type: type,
       contents: description,
-      owner:owner
+      owner: owner,
     });
     return res.status(201).json({ message: "Data added successfully" });
   } catch (e) {
@@ -41,8 +46,8 @@ app.post("/", async (req, res) => {
 });
 app.get("/all", async (req, res) => {
   try {
-    const id=req.query.id
-    const getAll = await Data.find({owner:id});
+    const id = req.query.id;
+    const getAll = await Data.find({ owner: id });
     if (!getAll) {
       throw new Error("Unable to find the notes");
     }
@@ -91,9 +96,9 @@ app.post("/add", async (req, res) => {
     if (!name || !email || !password) {
       throw new Error("missing details ");
     }
-    const exists=await User.findOne({email:email})
-    if(exists){
-      throw new Error("User already exists")
+    const exists = await User.findOne({ email: email });
+    if (exists) {
+      throw new Error("User already exists");
     }
     const hashed = await bcrypt.hash(password, 4);
     const createUser = await User.create({
@@ -134,6 +139,4 @@ app.post("/login", async (req, res) => {
       .json({ message: e.message || "Something went wrong" });
   }
 });
-app.get("/home", checkAuth, (req, res) => {
-
-});
+app.get("/home", checkAuth, (req, res) => {});
