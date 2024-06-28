@@ -61,17 +61,18 @@ export default function Landing() {
       <div className="bg-[rgb(37,99,235)] text-white w-full">
         <div className="container mx-auto flex flex-col md:flex-row items-center">
           <div className="md:w-1/2 text-center md:text-left md:mr-8 mx-4 md:mx-24 mt-10">
-            <div className="flex justify-center md:justify-start">
-              <h1 className="font-mono text-3xl md:text-6xl mr-3">Hello</h1>
-              <h1 className="font-mono text-3xl md:text-6xl mb-3 text-orange-400">
-                <ReactTyped
-                  strings={["Wise", "Talented", "Entertainment"]}
-                  typeSpeed={120}
-                  backSpeed={140}
-                  loop
-                />
-              </h1>
-            </div>
+          <div className="flex justify-center md:justify-start">
+  <h1 className="font-mono text-3xl md:text-6xl mr-3">Hi</h1>
+  <h1 className="font-mono text-3xl md:text-6xl mb-3 text-orange-400">
+    <ReactTyped
+      strings={["Smart", "Skilled", "Fun"]}
+      typeSpeed={120}
+      backSpeed={140}
+      loop
+    />
+  </h1>
+</div>
+
             <h1 className="font-mono text-3xl md:text-6xl mb-3">people</h1>
             <p className="mb-6 md:mb-0 md:w-[400px]">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis
