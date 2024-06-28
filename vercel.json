@@ -1,0 +1,26 @@
+{
+    "routes": [
+      {
+        "src": "/",
+        "dest": "./view/proj/src/components/landing.jsx"
+      },
+      {
+        "src": "/saved",
+        "dest": "/view/proj/src/components/saved.jsx"
+      },
+      {
+        "src": "/details",
+        "dest": "/view/proj/src/components/details.jsx"
+      },
+      {
+        "src": "/home",
+        "dest": "/view/proj/src/components/start.jsx"
+      },
+      {
+        "src": "/.*",
+        "status": 404,
+        "dest": "/view/proj/src/components/notFound.jsx"
+      }
+    ]
+  }
+  
