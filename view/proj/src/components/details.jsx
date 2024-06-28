@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineClose } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
-import Loader from "./loader"; 
+import Loader from "./loader";
 import { apiUrl } from "../lib/constants";
 
-document.title = "user login/signup";
+document.title = "Artify-login/signup";
 
 export default function Start() {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ export default function Start() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
 
   function Login() {
     setSignedUp(false);
@@ -38,16 +38,16 @@ export default function Start() {
     })
       .then((res) => res.json())
       .then((data) => {
-        setLoading(false); 
-        console.log(data);
+        setLoading(false);
         if (data.message === "Account created successfully") {
-          toast.success(data.message);
+          setSignedUp(false)
+          toast.success(data.message || "Account created");
         } else {
-          toast.error(data.message);
+          toast.error(data.message || "Something went wrong");
         }
       })
       .catch((e) => {
-        setLoading(false)
+        setLoading(false);
         toast.error(e);
       });
   }
@@ -63,14 +63,13 @@ export default function Start() {
     })
       .then((res) => res.json())
       .then((data) => {
-        setLoading(false); 
+        setLoading(false);
         if (data.token) {
           sessionStorage.setItem("token", data.token);
           sessionStorage.setItem("user", JSON.stringify(data.user));
           console.log("Login successful");
           navigate("/home");
         } else {
-          console.error(data.message || "Login failed");
           toast.error(data.message || "Login failed");
         }
       })
@@ -85,15 +84,10 @@ export default function Start() {
     sessionStorage.removeItem("user");
   });
 
-  if (loading) {
-    console.log("load")
-    return <Loader />; 
-  }
-
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <ToastContainer />
-      <div className="w-full max-w-md bg-white p-8 shadow-lg rounded-lg transition-all duration-500">
+      {loading? (<Loader />) :(
+        <div className="w-full max-w-md bg-white p-8 shadow-lg rounded-lg transition-all duration-500">
         <AiOutlineClose
           className="self-end cursor-pointer hover:bg-red-600 hover:text-white p-1 rounded-full"
           size={30}
@@ -154,14 +148,18 @@ export default function Start() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button
-            type="submit"
-            className="w-full bg-blue-900 text-white py-3 rounded-lg"
-          >
-            {signedUp ? "Signup" : "Login"}
-          </button>
+         <button
+  type="submit"
+  className="w-full bg-blue-900 text-white py-3 rounded-lg"
+>
+  {loading ? <Loader /> : (signedUp ? "Signup" : "Login")}
+</button>
+
         </form>
       </div>
+      )  
+      }
+      <ToastContainer position="top-center" />
     </div>
   );
 }

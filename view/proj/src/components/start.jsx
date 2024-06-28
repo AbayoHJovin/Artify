@@ -21,13 +21,6 @@ const MediaForm = () => {
       navigate("/details");
     }
   });
-  useEffect(()=>{
-    const user = sessionStorage.getItem("user");
-    const token = sessionStorage.getItem("token");
-    if (!token || !user) {
-      navigate("/details");
-    }
-  },[])
   const handleSubmit = (e) => {
     e.preventDefault();
     fetch(
