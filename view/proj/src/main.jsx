@@ -7,6 +7,7 @@ import Saved from "./components/saved.jsx";
 import Start from "./components/details.jsx";
 import Landing from "./components/landing.jsx";
 import NotFound from "./components/notFound.jsx";
+import Loader from "./components/loader.jsx";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,8 @@ const router = createBrowserRouter([
   },
   { path: "/details", element: <Start /> },
   { path: "/home", element: <MediaForm /> },
-  {path:"*",element:<NotFound/>}
+  { path: "*", element: <NotFound /> },
+  { path: "/load", element: <Loader /> },
 ]);
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

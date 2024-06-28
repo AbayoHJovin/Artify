@@ -2,14 +2,18 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineClose } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
+import Loader from "./loader"; 
 import { apiUrl } from "../lib/constants";
+
 document.title = "user login/signup";
+
 export default function Start() {
   const navigate = useNavigate();
   const [signedUp, setSignedUp] = useState(true);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false); 
 
   function Login() {
     setSignedUp(false);
@@ -20,6 +24,7 @@ export default function Start() {
   }
 
   function SignUserUp() {
+    setLoading(true);
     fetch(`${apiUrl}/add`, {
       method: "POST",
       headers: {
@@ -33,23 +38,22 @@ export default function Start() {
     })
       .then((res) => res.json())
       .then((data) => {
+        setLoading(false); 
         console.log(data);
         if (data.message === "Account created successfully") {
           toast.success(data.message);
-        } else if (data.message !== "Account created successfully") {
-          toast.error(data.message);
         } else {
-          setSignedUp(false);
+          toast.error(data.message);
         }
       })
-      .catch((e) => toast.error(e));
+      .catch((e) => {
+        setLoading(false)
+        toast.error(e);
+      });
   }
-  window.addEventListener("load", () => {
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("user");
-  });
 
   function loginUser() {
+    setLoading(true);
     fetch(`${apiUrl}/login`, {
       method: "POST",
       headers: {
@@ -59,6 +63,7 @@ export default function Start() {
     })
       .then((res) => res.json())
       .then((data) => {
+        setLoading(false); 
         if (data.token) {
           sessionStorage.setItem("token", data.token);
           sessionStorage.setItem("user", JSON.stringify(data.user));
@@ -69,7 +74,20 @@ export default function Start() {
           toast.error(data.message || "Login failed");
         }
       })
-      .catch((e) => console.error("Error:", e));
+      .catch((e) => {
+        setLoading(false);
+        console.error("Error:", e);
+      });
+  }
+
+  window.addEventListener("load", () => {
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
+  });
+
+  if (loading) {
+    console.log("load")
+    return <Loader />; 
   }
 
   return (
