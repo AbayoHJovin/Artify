@@ -14,13 +14,13 @@ const MediaForm = () => {
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
   const [usernames, setUsernames] = useState("");
-  document.addEventListener("visibilitychange", () => {
+  useEffect(() => {
     const user = sessionStorage.getItem("user");
     const token = sessionStorage.getItem("token");
     if (!token || !user) {
       navigate("/details");
     }
-  });
+  }, []);
   const handleSubmit = (e) => {
     e.preventDefault();
     fetch(
@@ -61,7 +61,7 @@ const MediaForm = () => {
     fetch(`${apiUrl}/home`, {
       method: "GET",
       headers: {
-        authorization: `${sessionStorage.getItem("token")}`, // Get the token from sessionStorage
+        authorization: `${sessionStorage.getItem("token")}`,
       },
     })
       .then((resp) => resp.json())
@@ -87,10 +87,10 @@ const MediaForm = () => {
     <div className="container mx-auto">
       <ToastContainer />
       <div className="flex justify-between items-center p-5 bg-white shadow-md sticky top-0">
-      <div className="text-gray-600 flex items-center">
-            <img src={logo} alt="Logo" className="h-12 mr-[-20px] mt-2" />
-            <p className="text-4xl font-extrabold text-purple-600">rtify</p>
-          </div>
+        <div className="text-gray-600 flex items-center">
+          <img src={logo} alt="Logo" className="h-12 mr-[-20px] mt-2" />
+          <p className="text-4xl font-extrabold text-purple-600">rtify</p>
+        </div>
         <div className="flex items-center space-x-7 cursor-pointer text-blue-500">
           <FaSave
             size={20}
